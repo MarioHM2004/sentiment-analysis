@@ -26,21 +26,34 @@ def load_data():
     def tokenize(batch):
         return tokenizer(batch["text"], padding="max_length", truncation=True, max_length=MAX_LENGTH)
 
+    # divide training in train + validation
+    train_val = dataset["train"].train_test_split(test_size=0.2, seed=42)
+
+    train_data = train_val["train"]
+    val_data = train_val["test"]
+    test_data = dataset["test"]
+
     # tokenize the dataset
-    train_data = dataset["train"].map(tokenize, batched=True)
-    test_data = dataset["test"].map(tokenize, batched=True)
+    train_data = train_data.map(tokenize, batched=True)
+    val_data = val_data.map(tokenize, batched=True)
+    test_data = test_data.map(tokenize, batched=True)
 
     # PyTorch format
-    train_data.set_format(type="torch", columns=["input_ids", "attention_mask", "label"])
-    test_data.set_format(type="torch", columns=["input_ids", "attention_mask", "label"])
+    cols = ["input_ids", "attention_mask", "label"]
+    train_data.set_format(type="torch", columns=cols)
+    val_data.set_format(type="torch", columns=cols)
+    test_data.set_format(type="torch", columns=cols)
 
     # data loaders
     train_dl = DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True)
-    test_dl = DataLoader(test_data, batch_size=BATCH_SIZE)
+    val_dl = DataLoader(val_data, batch_size=BATCH_SIZE, shuffle=False)
+    test_dl = DataLoader(test_data, batch_size=BATCH_SIZE, shuffle=False)
 
-    print(f"Loaded {len(train_dl.dataset)} training samples and {len(test_dl.dataset)} test samples.")
+    print(f"Train:      {len(train_data)} reviews")
+    print(f"Validation: {len(val_data)} reviews")
+    print(f"Test:       {len(test_data)} reviews")
 
-    return train_dl, test_dl
+    return train_dl, val_dl, test_dl
 
 def evaluate(model, test_dl):
     model.eval()
@@ -60,7 +73,7 @@ def evaluate(model, test_dl):
 
     return correct / total
 
-def train(model, train_dl, test_dl):
+def train(model, train_dl, val_dl):
     optimizer = torch.optim.AdamW(model.parameters(), lr=LEARNING_RATE)
     loss_fn = nn.CrossEntropyLoss()
     losses, accs = [], []
@@ -87,18 +100,20 @@ def train(model, train_dl, test_dl):
             losses.append(loss.item())
 
         # Evaluate
-        acc = evaluate(model, test_dl)
+        acc = evaluate(model, val_dl)
         accs.append(acc)
 
         avg_loss = epoch_loss / len(train_dl)
-        print(f"Epoch {epoch+1}/{EPOCHS} - Loss: {avg_loss:.4f} - Test Accuracy: {acc:.4f}")
+        print(f"Epoch {epoch+1}/{EPOCHS} "
+              f"| loss: {avg_loss:.4f} "
+              f"| val acc: {acc:.4f}")
 
     return losses, accs
 
 def main():
     # 1. Load data
     print("Loading data...")
-    train_dl, test_dl = load_data()
+    train_dl, val_dl, test_dl = load_data()
 
     # 2. Create model
     print("\nCreating model...")
@@ -110,17 +125,23 @@ def main():
 
     # 4. Train
     print("\nTraining...")
-    losses, accs = train(model, train_dl, test_dl)
+    losses, accs = train(model, train_dl, val_dl)
 
-    # 5. Final evaluation
-    print(f"\nFinal accuracy: {accs[-1]:.4f}")
+    # 5. Validation accuracy
+    print(f"\nBest val accuracy: {max(accs):.4f}")
+    print(f"Final val accuracy: {accs[-1]:.4f}")
     assert accs[-1] > 0.92, "Expected accuracy to be above 92%"
 
-    # 6. Save model
+    # 6. Finak evaluation on test set
+    print("\nFinal evaluation on test set...")
+    test_acc = evaluate(model, test_dl)
+    print(f"Test accuracy: {test_acc:.4f}")
+
+    # 7. Save model
     torch.save(model.state_dict(), "models/sentiment_classifier.pt")
     print("Model saved to models/sentiment_classifier.pt")
 
-    # 7. Graphs
+    # 8. Graphs
     import matplotlib.pyplot as plt
     fig, (a, b) = plt.subplots(1, 2, figsize=(10, 3.5))
 
