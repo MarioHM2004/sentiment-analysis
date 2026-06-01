@@ -7,12 +7,14 @@ from model import SentimentClassifierModel
 
 # Configuration
 
+EXP_NUM = 10
+
 DEVICE = ("cuda" if torch.cuda.is_available() else "cpu")
-BATCH_SIZE = 32
-EPOCHS = 4
-LEARNING_RATE = 1e-5
-MAX_LENGTH = 256
-DROPOUT = 0.2
+BATCH_SIZE = 16
+EPOCHS = 1
+LEARNING_RATE = 2e-5
+MAX_LENGTH = 512
+DROPOUT = 0.3
 
 print(f"Using device: {DEVICE}")
 
@@ -21,7 +23,7 @@ def load_data():
     dataset = load_dataset("stanfordnlp/imdb")
 
     # load tokenizer
-    tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-uncased")
+    tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-uncased-finetuned-sst-2-english")
 
     def tokenize(batch):
         return tokenizer(batch["text"], padding="max_length", truncation=True, max_length=MAX_LENGTH)
@@ -108,6 +110,11 @@ def train(model, train_dl, val_dl):
               f"| loss: {avg_loss:.4f} "
               f"| val acc: {acc:.4f}")
 
+        with open("models/training_log.txt", "a") as f:
+            f.write(f"Exp {EXP_NUM} | Epoch {epoch+1} | "
+                f"lr={LEARNING_RATE} | dropout={DROPOUT} | "
+                f"val acc={acc:.4f}\n")
+
     return losses, accs
 
 def main():
@@ -130,12 +137,12 @@ def main():
     # 5. Validation accuracy
     print(f"\nBest val accuracy: {max(accs):.4f}")
     print(f"Final val accuracy: {accs[-1]:.4f}")
-    assert accs[-1] > 0.92, "Expected accuracy to be above 92%"
 
     # 6. Finak evaluation on test set
     print("\nFinal evaluation on test set...")
     test_acc = evaluate(model, test_dl)
     print(f"Test accuracy: {test_acc:.4f}")
+    assert test_acc > 0.92, "Expected accuracy to be above 92%"
 
     # 7. Save model
     torch.save(model.state_dict(), "models/sentiment_classifier.pt")

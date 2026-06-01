@@ -6,14 +6,12 @@ class SentimentClassifierModel(nn.Module):
     def __init__(self, dropout=0.3):
         super().__init__()
         # DistilBERT pre-trained
-        self.distilbert = DistilBertModel.from_pretrained("distilbert-base-uncased")
+        self.distilbert = DistilBertModel.from_pretrained("distilbert-base-uncased-finetuned-sst-2-english")
 
         # Classification head
         self.classifier = nn.Sequential(
-            nn.Linear(768, 256),
-            nn.ReLU(),
             nn.Dropout(dropout),
-            nn.Linear(256, 2),
+            nn.Linear(768, 2),
         )
 
     def forward(self, input_ids, attention_mask):

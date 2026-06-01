@@ -2,8 +2,8 @@
 data/
 
 # Trained mdels — heavy, upload only last one
-models/*.pt
-models/*.png
+# models/*.pt
+# models/*.png
 
 # Python
 __pycache__/
