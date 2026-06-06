@@ -1,54 +1,72 @@
 # Build Your Dream
 
-Final project for DL2026 course.
-Binary sentiment classifier (positive/negative) for movie reviews
-using DistilBERT fine-tuned on the IMDB dataset.
+> DistilBERT fine-tuned on IMDB achieves **92.13 % test accuracy** on binary sentiment classification (positive / negative).
 
-## Team
-- Titouan Donin — Project Lead
-- Loup Thomas — Data Lead
-- Mario Herranz — Model Lead
-- Ziane Badarou — Evaluation & Writing Lead
-- Julien Renard — Reproducibility Lead
+## Setup
+
+```bash
+git clone https://github.com/TiluWeb/build-your-dream-ai
+cd build-your-dream-ai
+pip install -r requirements.txt
+```
 
 ## Goal
-Achieve ≥92% accuracy on binary sentiment classification
-(positive/negative) on the IMDB dataset (50,000 reviews).
+
+Achieve ≥92% accuracy on binary sentiment classification (positive/negative) on the IMDB dataset (50,000 reviews).
 
 ## Model Architecture
-- Base model: `distilbert-base-uncased-finetuned-sst-2-english`
-- Classification head: `Dropout(0.3) → Linear(768, 2)`
-- Total parameters: 66,364,418
+
+- **Base model:** `distilbert-base-uncased-finetuned-sst-2-english`
+- **Classification head:** Dropout(0.3) → Linear(768, 2)
+- **Total parameters:** 66,364,418
 
 ## Project Structure
+
 ```
 build-your-dream/
-├── data/              ← IMDB dataset (auto-downloaded)
-├── models/            ← model checkpoints
-├── notebooks/         ← evaluation and inference examples
+├── EXPERIMENTS.md             # full experiment log with hyperparameter sweeps
+├── LICENSE                    # MIT
+├── README.md
+├── checkpoints/
+│   └── best.pt                # best checkpoint (92.13% test accuracy)
+├── configs/
+│   └── default.yaml           # all hyperparameters
+├── evaluate.py                # loads a checkpoint, prints the headline number
+├── notebooks/
+│   ├── 01-eda.ipynb           # exploratory data analysis
+│   ├── 02-train.ipynb         # the training run, with seeds pinned
+│   └── 03-ablations.ipynb     # ablation studies
+├── requirements.txt           # exact deps
+├── results/
+│   ├── figures/
+│   │   └── training_curves.png  # loss & accuracy curves
+│   └── metrics.json           # headline numbers and ablations
 ├── src/
-│   ├── model.py       ← model architecture
-│   ├── train.py       ← training loop
-│   └── utils.py       ← inference utilities
-├── EXPERIMENTS.md     ← hyperparameter sweep results
-├── .gitignore
-└── README.md
+│   ├── __init__.py
+│   ├── data.py                # dataset loading and preprocessing
+│   ├── model.py               # model definition and classification head
+│   └── utils.py               # inference helpers (load_model, predict)
+└── train.py                   # the entry point
 ```
 
 ## Installation
 
 ### 1. Install Miniconda
+
 Download and install Miniconda from the official site:
+
 - Official: https://docs.conda.io/en/latest/miniconda.html
 - China mirror: https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/
 
 ### 2. Create the environment
+
 ```bash
 conda create -n dl2026 python=3.11 -y
 conda activate dl2026
 ```
 
 ### 3. Install PyTorch
+
 **NVIDIA GPU (CUDA):**
 ```bash
 pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
@@ -65,22 +83,26 @@ pip install torch torchvision torchaudio
 ```
 
 ### 4. Install project dependencies
+
 ```bash
 pip install transformers datasets accelerate
 ```
 
 ### 5. Verify installation
+
 ```bash
 python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
 ```
 
 ## Training
+
 ```bash
 conda activate dl2026
 python src/train.py
 ```
 
 ## Inference
+
 ```python
 from src.utils import load_model, predict
 
@@ -95,20 +117,56 @@ print(f"{label} ({confidence:.2%})")
 # positive (96.3%)
 ```
 
-## Results
-See [EXPERIMENTS.md](EXPERIMENTS.md) for the full experiment
-log, hyperparameter sweeps, and final results.
+## Reproducing our headline result
 
-**Best result:** 92.13% test accuracy (Experiment 9)
+```bash
+# Train from scratch (downloads IMDB automatically, saves checkpoints/best.pt)
+python train.py --config configs/default.yaml
+
+# Evaluate a saved checkpoint — prints test accuracy
+python evaluate.py --checkpoint checkpoints/best.pt
+```
+
+## Demo
+
+```bash
+python - <<'EOF'
+    from src.utils import load_model, predict
+    model, tok = load_model("checkpoints/best.pt", "distilbert-base-uncased-finetuned-sst-2-english")
+    label, conf = predict("This movie was absolutely amazing!", model, tok)
+    print(f"{label} ({conf:.2%})")
+    # positive (99.84%)
+EOF
+```
+
+## Results
+
+See [EXPERIMENTS.md](EXPERIMENTS.md) for the full experiment log, hyperparameter sweeps, and final results.
+
+**Best result: 92.13% test accuracy (Experiment 9)**
 
 ## Dataset
-- **Name:** Large Movie Review Dataset (IMDB)
-- **Source:** [stanfordnlp/imdb](https://huggingface.co/datasets/stanfordnlp/imdb)
-- **Size:** 25,000 train / 25,000 test reviews
-- **Task:** Binary sentiment classification (0=negative, 1=positive)
-- **License:** Academic/research use — cite ACL 2011 paper
+
+| Field   | Value |
+|---------|-------|
+| Name    | Large Movie Review Dataset (IMDB) |
+| Source  | `stanfordnlp/imdb` |
+| Size    | 25,000 train / 25,000 test reviews |
+| Task    | Binary sentiment classification (0=negative, 1=positive) |
+| License | Academic/research use — cite ACL 2011 paper |
 
 ## Status
-- Model trained — 92.13% test accuracy
-- Inference functions ready
-- Evaluation and error analysis in progress
+
+- [x] Model trained — 92.13% test accuracy
+- [x] Inference functions ready
+- [ ] Evaluation and error analysis in progress
+
+## Authors
+
+Titouan Donin — titouan.donin@epitech.eu  
+Mario Alessandro Herranz Machado — mariohm2404@gmail.com  
+Loup Thomas — loup.thomas@epitech.eu  
+Ziane Badarou — badaroucedene@icloud.com  
+Julien Renard — julien.renard@epitech.eu  
+
+MIT License — see [LICENSE](LICENSE).
