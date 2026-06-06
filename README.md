@@ -1,6 +1,6 @@
 # Build Your Dream
 
-> DistilBERT fine-tuned on IMDB achieves **92.13 % test accuracy** on binary sentiment classification (positive / negative).
+> DistilBERT fine-tuned on IMDB achieves **92.89 % test accuracy** on binary sentiment classification (positive / negative).
 
 ## Setup
 
