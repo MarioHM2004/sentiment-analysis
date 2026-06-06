@@ -1,0 +1,20 @@
+model:
+  checkpoint: distilbert-base-uncased-finetuned-sst-2-english
+  dropout: 0.3
+
+data:
+  dataset: stanfordnlp/imdb
+  max_length: 512
+  val_split: 0.2
+  seed: 42
+
+training:
+  batch_size: 16
+  epochs: 3
+  learning_rate: 2.0e-5
+
+paths:
+  checkpoint: checkpoints/best.pt
+  training_log: results/training_log.txt
+  figures_dir: results/figures
+  metrics: results/metrics.json
