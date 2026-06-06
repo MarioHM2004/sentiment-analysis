@@ -1,6 +1,6 @@
 # Build Your Dream
 
-> DistilBERT fine-tuned on IMDB achieves **92.13 % test accuracy** on binary sentiment classification (positive / negative).
+> DistilBERT fine-tuned on IMDB achieves **92.89 % test accuracy** on binary sentiment classification (positive / negative).
 
 ## Setup
 
@@ -163,10 +163,16 @@ See [EXPERIMENTS.md](EXPERIMENTS.md) for the full experiment log, hyperparameter
 
 ## Authors
 
-Titouan Donin — titouan.donin@epitech.eu  
-Mario Alessandro Herranz Machado — mariohm2404@gmail.com  
-Loup Thomas — loup.thomas@epitech.eu  
-Ziane Badarou — badaroucedene@icloud.com  
-Julien Renard — julien.renard@epitech.eu  
+- Titouan Donin — titouan.donin@epitech.eu
+- Mario Alessandro Herranz Machado — mario-alessandro.herranz-machado@epitech.eu
+- Loup Thomas — loup.thomas@epitech.eu
+- Ziane Badarou — badaroucedene@icloud.com
+- Julien Renard — julien.renard@epitech.eu
+
+## AI Disclosure
+
+Claude (Anthropic) was used for brainstorming, code structure guidance,
+and debugging assistance during development. All implementation decisions,
+training runs, hyperparameter experiments, and analysis are the authors' own work.
 
 MIT License — see [LICENSE](LICENSE).

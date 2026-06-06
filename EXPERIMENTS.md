@@ -31,7 +31,8 @@ using DistilBERT fine-tuned on the IMDB dataset.
 | 6   | 3e-5 | 0.2     | 2      | 32    | 256     | sst-2      | 89.30%  | 90.37%   | lr too high, destroyed knowledge |
 | 7   | 1e-5 | 0.1     | 3      | 32    | 256     | sst-2      | 90.06%  | 90.78%   | lr too low, slow convergence |
 | 8   | 2e-5 | 0.3     | 3      | 32    | 256     | sst-2      | 90.08%  | 91.10%   | simplified head: Dropout→Linear |
-| 9   | 2e-5 | 0.3     | 3      | 16    | 512     | sst-2      | 91.58%  | **92.13%** | MAX_LENGTH=512 — target reached |
+| 9   | 2e-5 | 0.3     | 3      | 16    | 512     | sst-2      | 91.58%  | 92.13%   | MAX_LENGTH=512 — target reached |
+| 9   | 2e-5 | 0.3     | 3      | 16    | 512     | sst-2      | 92.44%  | **92.89%** | MAX_LENGTH=512 — target reached |
 
 ## Best configuration
 | Parameter    | Value                                          |
@@ -45,6 +46,6 @@ using DistilBERT fine-tuned on the IMDB dataset.
 
 ## Final model
 - Saved at: `models/sentiment_classifier.pt`
-- Val accuracy:  91.58%
-- Test accuracy: **92.13%**
+- Val accuracy:  92.44%
+- Test accuracy: **92.89%**
 - Parameters:    66,364,418

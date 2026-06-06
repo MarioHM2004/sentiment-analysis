@@ -8,7 +8,7 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 def load_model(checkpoint_path: str, model_checkpoint: str, dropout: float = 0.3):
     tokenizer = DistilBertTokenizer.from_pretrained(model_checkpoint)
     model = SentimentClassifier(checkpoint=model_checkpoint, dropout=dropout).to(DEVICE)
-    model.load_state_dict(torch.load(checkpoint_path, map_location=DEVICE))
+    model.load_state_dict(torch.load(checkpoint_path, map_location=DEVICE, weights_only=False))
     model.eval()
     return model, tokenizer
 
