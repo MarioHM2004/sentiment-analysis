@@ -1,4 +1,4 @@
-# Sentiment Analysis on Movie Reviews
+# Build Your Dream
 
 Final project for DL2026 course.
 Binary sentiment classifier (positive/negative) for movie reviews
@@ -22,7 +22,7 @@ Achieve ≥92% accuracy on binary sentiment classification
 
 ## Project Structure
 ```
-sentiment-analysis/
+build-your-dream/
 ├── data/              ← IMDB dataset (auto-downloaded)
 ├── models/            ← model checkpoints
 ├── notebooks/         ← evaluation and inference examples
