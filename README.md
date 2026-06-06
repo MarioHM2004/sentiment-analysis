@@ -94,13 +94,6 @@ pip install transformers datasets accelerate
 python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
 ```
 
-## Training
-
-```bash
-conda activate dl2026
-python src/train.py
-```
-
 ## Inference
 
 ```python
@@ -137,6 +130,11 @@ python - <<'EOF'
     print(f"{label} ({conf:.2%})")
     # positive (99.84%)
 EOF
+```
+
+# Run life demo
+```
+python app.py
 ```
 
 ## Results
