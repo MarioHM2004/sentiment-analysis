@@ -1,11 +1,11 @@
-# Build Your Dream
+# Sentiment Analysis on Movie Reviews
 
 > DistilBERT fine-tuned on IMDB achieves **92.89 % test accuracy** on binary sentiment classification (positive / negative).
 
 ## Setup
 
 ```bash
-git clone https://github.com/TiluWeb/build-your-dream-ai
+git clone git@github.com:MarioHM2004/sentiment-analysis.git
 cd build-your-dream-ai
 pip install -r requirements.txt
 ```
@@ -46,6 +46,7 @@ build-your-dream/
 │   ├── data.py                # dataset loading and preprocessing
 │   ├── model.py               # model definition and classification head
 │   └── utils.py               # inference helpers (load_model, predict)
+|   └── App.py                 # Live demo
 └── train.py                   # the entry point
 ```
 
@@ -155,9 +156,9 @@ See [EXPERIMENTS.md](EXPERIMENTS.md) for the full experiment log, hyperparameter
 
 ## Status
 
-- [x] Model trained — 92.13% test accuracy
+- [x] Model trained — 92.89% test accuracy
 - [x] Inference functions ready
-- [ ] Evaluation and error analysis in progress
+- [x] Evaluation and error analysis ready
 
 ## Authors
 
