@@ -1,6 +1,6 @@
 {
-  "val_acc": 0.9158,
-  "test_acc": 0.9213,
+  "val_acc": 0.9244,
+  "test_acc": 0.9289,
   "parameters": 66364418,
   "epochs": 3,
   "learning_rate": 2e-05,
@@ -16,6 +16,7 @@
     {"exp": 6, "lr": 3e-5, "dropout": 0.2, "epochs": 2, "batch": 32, "max_len": 256, "checkpoint": "sst-2", "val_acc": 0.8930, "test_acc": 0.9037},
     {"exp": 7, "lr": 1e-5, "dropout": 0.1, "epochs": 3, "batch": 32, "max_len": 256, "checkpoint": "sst-2", "val_acc": 0.9006, "test_acc": 0.9078},
     {"exp": 8, "lr": 2e-5, "dropout": 0.3, "epochs": 3, "batch": 32, "max_len": 256, "checkpoint": "sst-2", "val_acc": 0.9008, "test_acc": 0.9110},
-    {"exp": 9, "lr": 2e-5, "dropout": 0.3, "epochs": 3, "batch": 16, "max_len": 512, "checkpoint": "sst-2", "val_acc": 0.9158, "test_acc": 0.9213}
+    {"exp": 9, "lr": 2e-5, "dropout": 0.3, "epochs": 3, "batch": 16, "max_len": 512, "checkpoint": "sst-2", "val_acc": 0.9158, "test_acc": 0.9213},
+    {"exp": 10, "lr": 2e-5, "dropout": 0.3, "epochs": 3, "batch": 16, "max_len": 512, "checkpoint": "sst-2", "val_acc": 0.9244, "test_acc": 0.9289}
   ]
 }
