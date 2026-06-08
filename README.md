@@ -28,7 +28,7 @@ build-your-dream/
 ├── LICENSE                    # MIT
 ├── README.md
 ├── checkpoints/
-│   └── best.pt                # best checkpoint (92.13% test accuracy)
+│   └── best.pt                # best checkpoint (92.89% test accuracy)
 ├── configs/
 │   └── default.yaml           # all hyperparameters
 ├── evaluate.py                # loads a checkpoint, prints the headline number
@@ -46,7 +46,7 @@ build-your-dream/
 │   ├── data.py                # dataset loading and preprocessing
 │   ├── model.py               # model definition and classification head
 │   └── utils.py               # inference helpers (load_model, predict)
-|   └── App.py                 # Live demo
+└── App.py                     # Live demo
 └── train.py                   # the entry point
 ```
 
@@ -142,7 +142,7 @@ python app.py
 
 See [EXPERIMENTS.md](EXPERIMENTS.md) for the full experiment log, hyperparameter sweeps, and final results.
 
-**Best result: 92.13% test accuracy (Experiment 9)**
+**Best result: 92.89% test accuracy (Experiment 10)**
 
 ## Dataset
 
